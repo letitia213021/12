@@ -2,91 +2,96 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>黃莫迦的藍色計算機</title>
+    <title>黃莫迦的質感計算機</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* 整體背景設置 */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #e3f2fd; /* 極淺藍背景 */
-            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            font-family: 'Roboto', sans-serif; /* 預設字型 */
         }
 
-        /* 計算機主體外框 */
         .calculator {
-            background-color: #1976d2; /* 深藍色主體 */
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-            width: 300px;
+            background-color: #1a237e; /* 深藍底色 */
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.3);
+            width: 320px;
         }
 
         h1 {
-            color: white;
+            color: #e3f2fd;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
             margin-bottom: 20px;
+            font-weight: 300;
         }
 
-        /* 顯示螢幕 */
+        /* 螢幕樣式優化 */
         #display {
             width: 100%;
-            height: 60px;
-            font-size: 24px;
+            height: 70px;
+            /* 關鍵：套用 Orbitron 字型 */
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 28px;
             text-align: right;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border: none;
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 15px;
+            padding: 15px;
             box-sizing: border-box;
-            background-color: #f0f7ff;
-            color: #0d47a1;
+            background-color: #0d1117; /* 深色螢幕背景 */
+            color: #4fc3f7; /* 亮藍色數字，模仿 LED 效果 */
+            box-shadow: inset 0px 4px 10px rgba(0,0,0,0.5);
         }
 
-        /* 按鍵容器 - 使用 Grid 佈局 */
         .buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 15px;
         }
 
-        /* 通用按鍵樣式 */
         input[type="button"] {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%; /* 關鍵：變成圓形 */
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             border: none;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
-            background-color: #bbdefb; /* 淺藍色按鍵 */
-            color: #0d47a1;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background-color: #283593;
+            color: white;
+            box-shadow: 0px 4px 0px #1a237e;
         }
 
-        /* 滑鼠滑過按鍵的效果 */
+        /* 按下按鈕的位移效果 */
+        input[type="button"]:active {
+            transform: translateY(3px);
+            box-shadow: 0px 1px 0px #1a237e;
+        }
+
         input[type="button"]:hover {
-            background-color: #90caf9;
-            transform: scale(1.1);
+            background-color: #3949ab;
         }
 
-        /* 運算符號與特殊按鍵顏色 */
+        /* 功能鍵顏色優化 */
         .operator {
-            background-color: #64b5f6 !important;
-            color: white !important;
+            background-color: #039be5 !important;
         }
 
         .equals {
-            background-color: #2196f3 !important;
-            color: white !important;
+            background-color: #00b0ff !important;
         }
 
         .clear {
-            background-color: #ef5350 !important; /* 清除鍵維持紅色提醒 */
-            color: white !important;
+            background-color: #ff5252 !important;
         }
     </style>
 </head>
@@ -94,34 +99,38 @@
 
 <div class="calculator">
     <h1>黃莫迦的計算機</h1>
-    <input type="text" id="display" readonly>
+    <input type="text" id="display" readonly placeholder="0">
     
     <div class="buttons">
+        <input type="button" class="clear" value="C" onclick="clearDisplay()">
+        <input type="button" class="operator" value="÷" onclick="appendToDisplay('/')">
+        <input type="button" class="operator" value="×" onclick="appendToDisplay('*')">
+        <input type="button" class="operator" value="-" onclick="appendToDisplay('-')">
+        
         <input type="button" value="7" onclick="appendToDisplay('7')">
         <input type="button" value="8" onclick="appendToDisplay('8')">
         <input type="button" value="9" onclick="appendToDisplay('9')">
-        <input type="button" class="operator" value="/" onclick="appendToDisplay('/')">
+        <input type="button" class="operator" value="+" onclick="appendToDisplay('+')">
         
         <input type="button" value="4" onclick="appendToDisplay('4')">
         <input type="button" value="5" onclick="appendToDisplay('5')">
         <input type="button" value="6" onclick="appendToDisplay('6')">
-        <input type="button" class="operator" value="*" onclick="appendToDisplay('*')">
+        <input type="button" class="equals" value="=" onclick="calculate()" style="grid-row: span 2; height: 135px; border-radius: 30px;">
         
         <input type="button" value="1" onclick="appendToDisplay('1')">
         <input type="button" value="2" onclick="appendToDisplay('2')">
         <input type="button" value="3" onclick="appendToDisplay('3')">
-        <input type="button" class="operator" value="-" onclick="appendToDisplay('-')">
         
-        <input type="button" value="0" onclick="appendToDisplay('0')">
-        <input type="button" class="clear" value="C" onclick="clearDisplay()">
-        <input type="button" class="equals" value="=" onclick="calculate()">
-        <input type="button" class="operator" value="+" onclick="appendToDisplay('+')">
+        <input type="button" value="0" onclick="appendToDisplay('0')" style="grid-column: span 2; width: 135px; border-radius: 30px;">
+        <input type="button" value="." onclick="appendToDisplay('.')">
     </div>
 </div>
 
 <script>
     function appendToDisplay(value) {
-        document.getElementById("display").value += value;
+        const display = document.getElementById("display");
+        if (display.value === 'Error') display.value = '';
+        display.value += value;
     }
 
     function clearDisplay() {
@@ -131,7 +140,8 @@
     function calculate() {
         var expression = document.getElementById("display").value;
         try {
-            // 使用 eval 進行運算
+            // 簡單的防錯處理
+            if (expression.trim() === "") return;
             document.getElementById("display").value = eval(expression);
         } catch (e) {
             document.getElementById("display").value = 'Error';
