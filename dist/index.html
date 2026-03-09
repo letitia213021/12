@@ -1,76 +1,143 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <title>test</title>
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>黃莫迦的計算機</title>
+    <meta charset="UTF-8">
+    <title>黃莫迦的藍色計算機</title>
     <style>
-        input[type="button"] {
-            width: 50px;
-            height: 50px;
+        /* 整體背景設置 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e3f2fd; /* 極淺藍背景 */
+            font-family: Arial, sans-serif;
         }
-        input[type="text"] {
-            width: 200px;
-            height: 50px;
+
+        /* 計算機主體外框 */
+        .calculator {
+            background-color: #1976d2; /* 深藍色主體 */
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        /* 顯示螢幕 */
+        #display {
+            width: 100%;
+            height: 60px;
+            font-size: 24px;
+            text-align: right;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #f0f7ff;
+            color: #0d47a1;
+        }
+
+        /* 按鍵容器 - 使用 Grid 佈局 */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        /* 通用按鍵樣式 */
+        input[type="button"] {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%; /* 關鍵：變成圓形 */
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: #bbdefb; /* 淺藍色按鍵 */
+            color: #0d47a1;
+        }
+
+        /* 滑鼠滑過按鍵的效果 */
+        input[type="button"]:hover {
+            background-color: #90caf9;
+            transform: scale(1.1);
+        }
+
+        /* 運算符號與特殊按鍵顏色 */
+        .operator {
+            background-color: #64b5f6 !important;
+            color: white !important;
+        }
+
+        .equals {
+            background-color: #2196f3 !important;
+            color: white !important;
+        }
+
+        .clear {
+            background-color: #ef5350 !important; /* 清除鍵維持紅色提醒 */
+            color: white !important;
         }
     </style>
 </head>
 <body>
+
+<div class="calculator">
     <h1>黃莫迦的計算機</h1>
-  <hr>
-   <hr>
-     <hr>
     <input type="text" id="display" readonly>
-    <br>
-    <input type="button" value="1" onclick="appendToDisplay('1')">
-    <input type="button" value="2" onclick="appendToDisplay('2')">
-    <input type="button" value="3" onclick="appendToDisplay('3')">
-    <input type="button" value="+" onclick="appendToDisplay('+')">
-    <br>
-    <input type="button" value="4" onclick="appendToDisplay('4')">
-    <input type="button" value="5" onclick="appendToDisplay('5')">
-    <input type="button" value="6" onclick="appendToDisplay('6')">
-    <input type="button" value="-" onclick="appendToDisplay('-')">
-    <br>
-    <input type="button" value="7" onclick="appendToDisplay('7')">
-    <input type="button" value="8" onclick="appendToDisplay('8')">
-    <input type="button" value="9" onclick="appendToDisplay('9')">
-    <input type="button" value="*" onclick="appendToDisplay('*')">
-    <br>
-    <input type="button" value="0" onclick="appendToDisplay('0')">
-    <input type="button" value="C" onclick="clearDisplay()">
-    <input type="button" value="=" onclick="calculate()">
-    <input type="button" value="/" onclick="appendToDisplay('/')">
-    <br>
-    <script>
-        function appendToDisplay(value) {
-            document.getElementById("display").value += value;
-        }
+    
+    <div class="buttons">
+        <input type="button" value="7" onclick="appendToDisplay('7')">
+        <input type="button" value="8" onclick="appendToDisplay('8')">
+        <input type="button" value="9" onclick="appendToDisplay('9')">
+        <input type="button" class="operator" value="/" onclick="appendToDisplay('/')">
+        
+        <input type="button" value="4" onclick="appendToDisplay('4')">
+        <input type="button" value="5" onclick="appendToDisplay('5')">
+        <input type="button" value="6" onclick="appendToDisplay('6')">
+        <input type="button" class="operator" value="*" onclick="appendToDisplay('*')">
+        
+        <input type="button" value="1" onclick="appendToDisplay('1')">
+        <input type="button" value="2" onclick="appendToDisplay('2')">
+        <input type="button" value="3" onclick="appendToDisplay('3')">
+        <input type="button" class="operator" value="-" onclick="appendToDisplay('-')">
+        
+        <input type="button" value="0" onclick="appendToDisplay('0')">
+        <input type="button" class="clear" value="C" onclick="clearDisplay()">
+        <input type="button" class="equals" value="=" onclick="calculate()">
+        <input type="button" class="operator" value="+" onclick="appendToDisplay('+')">
+    </div>
+</div>
 
-        function clearDisplay() {
-            document.getElementById("display").value = '';
-        }
+<script>
+    function appendToDisplay(value) {
+        document.getElementById("display").value += value;
+    }
 
-        function calculate() {
-            var expression = document.getElementById("display").value;
-            try {
-                document.getElementById("display").value = eval(expression);
-            } catch (e) {
-                document.getElementById("display").value = 'Error';
-            }
+    function clearDisplay() {
+        document.getElementById("display").value = '';
+    }
+
+    function calculate() {
+        var expression = document.getElementById("display").value;
+        try {
+            // 使用 eval 進行運算
+            document.getElementById("display").value = eval(expression);
+        } catch (e) {
+            document.getElementById("display").value = 'Error';
         }
-    </script>
-</body>
-</html>
-<!-- partial -->
-  
+    }
+</script>
+
 </body>
 </html>
